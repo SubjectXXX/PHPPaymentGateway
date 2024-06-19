@@ -1,6 +1,7 @@
 {
     "name": "datalinx/pgc-php-client",
     "description": "Bankart-provided PHP Payment Gateway package",
+    "version": "1.0.0",
     "keywords": [],
     "license": "MIT",
     "type": "project",
