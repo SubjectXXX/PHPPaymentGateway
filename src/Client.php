@@ -64,7 +64,7 @@ class Client {
     /**
      * @var string
      */
-    protected static $gatewayUrl = 'https://gateway.bankart.si/';
+    private $gatewayUrl;
 
     /**
      * the api key given by the gateway
@@ -127,7 +127,8 @@ class Client {
      * @param string $language
      * @param bool   $testMode - DEPRECATED
      */
-    public function __construct($username, $password, $apiKey, $sharedSecret, $language = null, $testMode = false) {
+    public function __construct($gatewayUrl, $username, $password, $apiKey, $sharedSecret, $language = null, $testMode = false) {
+        $this->gatewayUrl = $gatewayUrl;
         $this->username = $username;
         $this->setPassword($password);
         $this->apiKey = $apiKey;
@@ -191,7 +192,7 @@ class Client {
      */
     protected function sendTransaction($transactionMethod, AbstractTransaction $transaction) {
         $xml = $this->buildXml($transactionMethod, $transaction);
-        $httpResponse= $this->sendRequest($xml, self::$gatewayUrl.self::TRANSACTION_ROUTE);
+        $httpResponse= $this->sendRequest($xml, $this->gatewayUrl.self::TRANSACTION_ROUTE);
 
         return $this->getParser()->parseResult($httpResponse->getBody());
     }
@@ -287,7 +288,7 @@ class Client {
 
         $scheduleXml = $this->getGenerator()->generateScheduleXml($scheduleAction, $schedule, $this->username, $this->password);
 
-        $httpResponse = $this->sendRequest($scheduleXml, self::$gatewayUrl.self::SCHEDULE_ROUTE);
+        $httpResponse = $this->sendRequest($scheduleXml, $this->gatewayUrl.self::SCHEDULE_ROUTE);
 
         return $this->getParser()->parseScheduleResult($httpResponse->getBody());
     }
@@ -307,7 +308,7 @@ class Client {
 
         $statusRequestXml = $this->getGenerator()->generateStatusRequestXml($statusRequestData, $this->username, $this->password);
 
-        $httpResponse = $this->sendRequest($statusRequestXml, self::$gatewayUrl.self::STATUS_ROUTE);
+        $httpResponse = $this->sendRequest($statusRequestXml, $this->gatewayUrl.self::STATUS_ROUTE);
 
         return $this->getParser()->parseStatusResult($httpResponse->getBody());
     }
@@ -372,7 +373,7 @@ class Client {
      */
     protected function sendJsonApiRequest($dataArray, $path) {
         
-        $url = self::$gatewayUrl.$path;
+        $url = $this->gatewayUrl.$path;
         $body = json_encode($dataArray);
         
         $httpResponse = $this->signAndSendJson($body, $url, $this->username, $this->password, $this->apiKey, $this->sharedSecret);
@@ -1048,7 +1049,7 @@ class Client {
         $domDocument = $this->getGenerator()->generateOptions($this->getUsername(), $this->getPassword(), $identifier, $args);
         $xml = $domDocument->saveXML();
 
-        $response = $this->signAndSendXml($xml, $this->apiKey, $this->sharedSecret, self::$gatewayUrl.self::OPTIONS_ROUTE);
+        $response = $this->signAndSendXml($xml, $this->apiKey, $this->sharedSecret, $this->gatewayUrl.self::OPTIONS_ROUTE);
 
         if ($response->getErrorCode() || $response->getErrorMessage()) {
             throw new ClientException('Request failed: ' . $response->getErrorCode() . ' ' . $response->getErrorMessage());
@@ -1111,7 +1112,7 @@ class Client {
      *
      * @internal
      */
-    public static function setApiUrl($url) {
+    public function setApiUrl($url) {
         if (empty($url)) {
             throw new InvalidValueException('The URL to the Gateway can not be empty!');
         }
@@ -1120,7 +1121,7 @@ class Client {
             throw new InvalidValueException('The URL to the Gateway should be a valid URL!');
         }
 
-        static::$gatewayUrl = $url;
+        $this->gatewayUrl = $url;
     }
 
     /**
@@ -1128,8 +1129,8 @@ class Client {
      *
      * @return string
      */
-    public static function getApiUrl() {
-        return static::$gatewayUrl;
+    public  function getApiUrl() {
+        return $this->gatewayUrl;
     }
 
     /**

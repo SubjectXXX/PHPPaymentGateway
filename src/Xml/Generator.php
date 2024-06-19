@@ -40,7 +40,7 @@ class Generator {
     /**
      * @var string
      */
-    protected $namespaceRoot = 'http://gateway.bankart.si';
+    protected $namespaceRoot = 'https://bankart.paymentsandbox.cloud/';
 
     /**
      * @param string $namespaceRoot
