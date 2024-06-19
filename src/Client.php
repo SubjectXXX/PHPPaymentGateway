@@ -120,6 +120,7 @@ class Client {
     protected $generator;
 
     /**
+     * @param string $gatewayUrl
      * @param string $username
      * @param string $password
      * @param string $apiKey
