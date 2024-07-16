@@ -26,7 +26,12 @@ class CurlExec {
     private $body;
 
     /**
-     * @param resource $handle
+     * @var \CurlHandle
+     */
+    private $handle;
+
+    /**
+     * @param \CurlHandle $handle
      */
     public function __construct($handle) {
         $this->handle = $handle;
