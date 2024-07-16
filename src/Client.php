@@ -1066,7 +1066,7 @@ class Client {
      */
     public function getGenerator() {
         if (!$this->generator) {
-            $this->generator = new Generator();
+            $this->generator = new Generator($this->gatewayUrl);
         }
         return $this->generator;
     }

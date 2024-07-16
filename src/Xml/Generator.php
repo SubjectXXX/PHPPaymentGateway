@@ -40,7 +40,15 @@ class Generator {
     /**
      * @var string
      */
-    protected $namespaceRoot = 'https://bankart.paymentsandbox.cloud/';
+    protected $namespaceRoot;
+
+    /**
+     * @param string $namespaceRoot
+     */
+    public function __construct($namespaceRoot)
+    {
+        $this->namespaceRoot = $namespaceRoot;
+    }
 
     /**
      * @param string $namespaceRoot
