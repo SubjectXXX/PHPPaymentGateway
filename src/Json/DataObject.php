@@ -72,9 +72,8 @@ class DataObject implements \ArrayAccess, \JsonSerializable {
 
     /**
      * @param string $offset
-     * @return bool
      */
-    public function offsetExists($offset) {
+    public function offsetExists($offset): bool {
         return array_key_exists($offset, $this->_data);
     }
 
@@ -90,14 +89,14 @@ class DataObject implements \ArrayAccess, \JsonSerializable {
      * @param string $offset
      * @param mixed $value
      */
-    public function offsetSet($offset, $value) {
-        return $this->__set($offset, $value);
+    public function offsetSet($offset, $value): void {
+        $this->__set($offset, $value);
     }
 
     /**
      * @param string $offset
      */
-    public function offsetUnset($offset) {
+    public function offsetUnset($offset): void {
         $this->__unset($offset);
     }
 
