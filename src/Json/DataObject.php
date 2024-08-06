@@ -79,15 +79,13 @@ class DataObject implements \ArrayAccess, \JsonSerializable {
 
     /**
      * @param string $offset
-     * @return mixed|null
      */
-    public function offsetGet($offset) {
+    public function offsetGet($offset): mixed {
         return $this->__get($offset);
     }
 
     /**
      * @param string $offset
-     * @param mixed $value
      */
     public function offsetSet($offset, $value): void {
         $this->__set($offset, $value);
@@ -100,11 +98,8 @@ class DataObject implements \ArrayAccess, \JsonSerializable {
         $this->__unset($offset);
     }
 
-    /**
-     * @return array
-     */
-    public function jsonSerialize() {
-        return $this->_data;
+    public function jsonSerialize(): mixed {
+        return json_encode($this->_data);
     }
 
     /**
