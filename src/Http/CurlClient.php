@@ -258,7 +258,7 @@ class CurlClient implements ClientInterface {
 
         $contentType = 'application/json; charset=utf-8';
 
-        $signature = $this->createJsonSignature($sharedSecret, 'POST', $body, $contentType, $timestamp, $requestUri);base64_encode($digest);
+        $signature = $this->createJsonSignature($sharedSecret, 'POST', $body, $contentType, $timestamp, $requestUri);
 
         $this->additionalHeaders = array(
             'Date' => $timestamp,
