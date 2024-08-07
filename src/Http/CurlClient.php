@@ -258,7 +258,7 @@ class CurlClient implements ClientInterface {
 
         $contentType = 'application/json; charset=utf-8';
 
-        $parts = array('POST', md5($body), $contentType, $timestamp, $requestUri);
+        $parts = array('POST', hash('sha512', $body), $contentType, $timestamp, $requestUri);
 
         $str = join("\n", $parts);
         $digest = hash_hmac('sha512', $str, $sharedSecret, true);
